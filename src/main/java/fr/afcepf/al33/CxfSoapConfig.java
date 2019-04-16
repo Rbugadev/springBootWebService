@@ -23,8 +23,8 @@ public class CxfSoapConfig {
 
     // Replaces the need for web.xml
     @Bean
-    public ServletRegistrationBean<CXFServlet> servletRegistrationBean(ApplicationContext context) {
-        return new ServletRegistrationBean<CXFServlet>(new CXFServlet(), "/service/*");
+    public ServletRegistrationBean servletRegistrationBean(ApplicationContext context) {
+        return new ServletRegistrationBean(new CXFServlet(), "/service/*");
     }
 
     @Autowired
@@ -37,6 +37,8 @@ public class CxfSoapConfig {
         Bus bus = (Bus) applicationContext.getBean(Bus.DEFAULT_BUS_ID);
         EndpointImpl endpoint = new EndpointImpl(bus, convertisseur /* implementor */);
         endpoint.publish("/convertisseur");
+        //URL soap complete:
+        //http://localhost:8080/springBootWebService/service/convertisseur
         return endpoint;
     }
 

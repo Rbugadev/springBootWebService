@@ -36,7 +36,7 @@ public class ConvertisseurImpl implements Convertisseur {
 	}
 
 	public String getAuteur() {
-		return "didier";
+		return "roque";
 	}
 
 	
