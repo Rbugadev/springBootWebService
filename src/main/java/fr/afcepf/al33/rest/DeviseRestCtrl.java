@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import fr.afcepf.al33.dto.ResConv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,15 @@ public class DeviseRestCtrl {
 	public Devise createOrUpdateDevise(@RequestBody @Valid Devise devise){
 	    deviseDao.save(devise);
 	    return devise;
+    }
+
+    // URL = http://localhost:8080/springBootWebService/rest/devises/convertir?montant=50&source=EUR&cible=USD
+    @RequestMapping(value = "/convert", method = RequestMethod.GET)
+    public ResConv convertir(@RequestParam("montant") Double montant,
+                             @RequestParam("source") String source,
+                             @RequestParam("cible") String cible) {
+        Double res = convertisseur.convertir(montant, source, cible);
+        return new ResConv(montant, source, cible, res);
     }
 
     @RequestMapping(value = "/{codeDevise}", method = RequestMethod.DELETE)

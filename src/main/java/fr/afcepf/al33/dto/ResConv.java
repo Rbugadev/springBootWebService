@@ -9,7 +9,7 @@ import lombok.*;
 
 
 //@ToString @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@Data
+@Data @AllArgsConstructor
 public class ResConv {
 
     private Double montant;
