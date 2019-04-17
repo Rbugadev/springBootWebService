@@ -41,7 +41,7 @@ public class DeviseRestCtrl {
 		if(tauxChangeMini==null)
 			return toutesDevises;
 		else
-			return toutesDevises.stream().filter((d)-> d.getTauxChange()>tauxChangeMini).collect(Collectors.toList());
+			return toutesDevises.stream().filter((d)-> d.getTauxChange()>=tauxChangeMini).collect(Collectors.toList());
 	}
 
 }
