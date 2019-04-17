@@ -14,6 +14,8 @@ import fr.afcepf.al33.conv.Convertisseur;
 import fr.afcepf.al33.dao.DeviseDao;
 import fr.afcepf.al33.entity.Devise;
 
+import javax.validation.Valid;
+
 @RestController //@Component de type @RestController
 @RequestMapping(value="/rest/devises" , headers="Accept=application/json")
 public class DeviseRestCtrl {
@@ -26,7 +28,7 @@ public class DeviseRestCtrl {
 
 
     @RequestMapping(value="" , method=RequestMethod.POST)
-	public Devise createOrUpdateDevise(@RequestBody Devise devise){
+	public Devise createOrUpdateDevise(@RequestBody @Valid Devise devise){
 	    deviseDao.save(devise);
 	    return devise;
     }
@@ -41,7 +43,7 @@ public class DeviseRestCtrl {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        */ 
+        */
     }
 	
 	//URL= http://localhost:8080/springBootWebService/rest/devises/EUR
