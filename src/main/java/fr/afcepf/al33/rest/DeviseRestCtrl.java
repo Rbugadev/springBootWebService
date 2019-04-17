@@ -35,7 +35,7 @@ public class DeviseRestCtrl {
     }
 
     // URL = http://localhost:8080/springBootWebService/rest/devises/convertir?montant=50&source=EUR&cible=USD
-    @RequestMapping(value = "/convert", method = RequestMethod.GET)
+    @RequestMapping(value = "/convertir", method = RequestMethod.GET)
     public ResConv convertir(@RequestParam("montant") Double montant,
                              @RequestParam("source") String source,
                              @RequestParam("cible") String cible) {
