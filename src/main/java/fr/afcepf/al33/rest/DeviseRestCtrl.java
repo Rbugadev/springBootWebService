@@ -30,6 +30,19 @@ public class DeviseRestCtrl {
 	    deviseDao.save(devise);
 	    return devise;
     }
+
+    @RequestMapping(value = "/{codeDevise}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDeviseByCode(@PathVariable("codeDevise") String codeDevise){
+       // try {
+            Devise devise = deviseDao.findById(codeDevise).get();
+            deviseDao.delete(devise);
+            return new ResponseEntity<>(HttpStatus.OK);
+      /*  } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        */ 
+    }
 	
 	//URL= http://localhost:8080/springBootWebService/rest/devises/EUR
 	@RequestMapping(value="/{codeDevise}" , method=RequestMethod.GET)
