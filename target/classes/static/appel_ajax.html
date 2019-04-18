@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="lib/jquery-3.4.0.min.js"></script>
+<script src="js/my-jq-ajax-util.js"></script>
+<script>
+$(function() {
+	$('#idDivMessage').html("message au demarrage");
+
+	$('#idBtnSave').on('click',function(){
+		var devise = { code : null,
+				  monnaie : null,
+				  tauxChange : null
+				};
+		devise.code = $('#idCode').val();
+		devise.monnaie = $('#idMonnaie').val();
+		devise.tauxChange = Number( $('#idTauxChange').val() );
+		var deviseAsJsonString = JSON.stringify(devise);
+        var saveDeviseAsJsonString = null;
+        setSecurityTokenForAjax();//js/my-jq-ajax-util.js
+		$.ajax({ type : 'POST',
+               url : './rest/devises',
+               data : deviseAsJsonString ,
+               contentType : 'application/json',
+               success: function(data,status,xhr) {
+            	   saveDeviseAsJsonString = JSON.stringify(data);
+            	   console.log(saveDeviseAsJsonString);
+            	   $('#idDivMessage').html("devise sauvegardée : " + saveDeviseAsJsonString);
+                   },
+                   error: function( jqXHR, textStatus, errorThrown ){
+		        	   $("#idDivMessage").html( xhrStatusToErrorMessage(jqXHR) + "status:" + textStatus + " error : " + errorThrown ) ;
+		           }
+			});
+	});
+	
+})
+</script>
+<meta charset="ISO-8859-1">
+<title>appel_ajax</title>
+</head>
+<body>
+    codeMonnaie: <input type="text" id="idCode" /> <br/>
+    monnaie: <input type="text" id="idMonnaie" /> <br/>
+    tauxChange: <input type="text" id="idTauxChange" /> <br/>
+    <input type="button" id="idBtnSave" value="sauvegarder" /> <br/>
+    <div id="idDivMessage"></div>
+</body>
+</html>

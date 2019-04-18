@@ -18,18 +18,18 @@ import fr.afcepf.al33.conv.Convertisseur;
 @ImportResource({ "classpath:META-INF/cxf/cxf.xml" })
 public class CxfSoapConfig {
 
-    @Autowired
+	@Autowired
     private ApplicationContext applicationContext;
-
-    // Replaces the need for web.xml
+	
+	// Replaces the need for web.xml
     @Bean
     public ServletRegistrationBean servletRegistrationBean(ApplicationContext context) {
         return new ServletRegistrationBean(new CXFServlet(), "/service/*");
     }
-
-    @Autowired
+    
+    @Autowired 
     private Convertisseur convertisseur;
-
+ 
     // Replaces cxf-servlet.xml
     @Bean
     // <jaxws:endpoint id="convertisseurServiceEndpoint" implementor="#convertisseurImpl" address="/convertisseur"/>
@@ -41,6 +41,6 @@ public class CxfSoapConfig {
         //http://localhost:8080/springBootWebService/service/convertisseur
         return endpoint;
     }
-
+ 
 
 }

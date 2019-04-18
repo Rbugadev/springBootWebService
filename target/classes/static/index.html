@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Index majeur</title>
+<meta charset="ISO-8859-1">
+<title>Index majeur</title>
 </head>
 <body>
-<h1>welcome to springBootWebService</h1>
-<hr/>
-<a href="./service">liste des WS</a><br/>
-<hr>
-<h3>Url de test pour web service REST</h3>
-<a href="./rest/devises/EUR">devise EUR en JSON via REST/GET</a>
+	<h1>welcome to springBootWebService</h1>
+	<hr/>
+	<a href="./service">liste des WS soap gérés par cxf</a><br/>
+	<hr/>
+	<a href="./login.html">login (demande jeton)</a>
+	<hr/>
+	<a href="./appel_ajax.html">appel_ajax de WS REST (js/jquery)</a>
+	<hr>
+	<h3>url de test pour web service REST</h3>
+	<a href="./rest/devises/EUR">devise EUR en JSON via REST/GET</a><br/>
+	<a href="./rest/devises">toutes les devises en JSON via REST/GET</a><br/>
+	<a href="./rest/devises?tauxChangeMini=1">devises?tauxChangeMini=1</a><br/>
+	<a href="./rest/devises/convertir?montant=50&source=EUR&cible=USD">conversion</a><br/>
 </body>
 </html>

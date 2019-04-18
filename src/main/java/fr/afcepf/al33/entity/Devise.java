@@ -11,8 +11,8 @@ public class Devise {
 	private String code; //EUR , USD , JPY , GBP, ...
 	
 	private String monnaie;
-
-	@Min(value = 0, message = "le taux change doit etre positif")
+	
+	@Min(value=0,message="le tauxChange doit etre positif")
 	private Double tauxChange;
 
 	public String getCode() {

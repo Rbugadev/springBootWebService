@@ -5,14 +5,31 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import fr.afcepf.al33.security.util.JwtAuthenticationFilter;
+import fr.afcepf.al33.security.util.MyNoAuthenticationEntryPoint;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)//necessary for @PreAuthorize("hasRole('ADMIN or ...')")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+	
+
+	@Autowired
+    private MyNoAuthenticationEntryPoint unauthorizedHandler;
+	
 
     @Autowired
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
@@ -29,27 +46,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-    	http.authorizeRequests()
-		.antMatchers("/",
-                "/favicon.ico",
-                "/**/*.png",
-                "/**/*.gif",
-                "/**/*.svg",
-                "/**/*.jpg",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js").permitAll()
-    	.antMatchers("/rest/**").permitAll()
-    	.antMatchers("/mvc/**").permitAll()
-		//.anyRequest().authenticated()
-		.and().formLogin().permitAll()
-		.and().cors() //enable CORS (avec @CrossOrigin sur class @RestController)
-		.and().csrf().disable();
-		
-		//.and().httpBasic() 
-		
+    protected void configure(HttpSecurity http) throws Exception {
+    	
+    	http
+		// Disable CSRF protection since tokens are immune to it
+		.csrf().disable()
+		// If the user is not authenticated, returns 401
+		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+		// This is a stateless application, disable sessions
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		// Custom filter for authenticating users using tokens
+		.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+		// Disable resource caching
+		.headers().cacheControl();
+    	
+    	http
+    	 .authorizeRequests()
+    	    .antMatchers("/",
+                 "/favicon.ico",
+                 "/**/*.png",
+                 "/**/*.gif",
+                 "/**/*.svg",
+                 "/**/*.jpg",
+                 "/**/*.html",
+                 "/**/*.css",
+                 "/**/*.js").permitAll()
+	 		   .antMatchers("/rest/auth/**").permitAll()
+	 		   .antMatchers("/rest/public/**").permitAll()
+	 		   .antMatchers("/service/**").permitAll() //pour cxf/soap
+	 		   //.anyRequest().permitAll()
+	 		   .anyRequest().authenticated()
+	 		   //.anyRequest().hasRole("ADMIN")
+	 		   .and().cors();
+	 			//.and().httpBasic()
+    
     }
     
     @Bean
